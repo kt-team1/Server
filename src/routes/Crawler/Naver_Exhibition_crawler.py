@@ -149,7 +149,7 @@ for loc in location_set:
 
 # In[10]:
 
-
+print("In[10]")
 # In[11]:
 
 
@@ -168,6 +168,6 @@ with open('./routes/Crawler/exhibition_address.json', 'w', encoding='utf-8') as 
 
 # In[ ]:
 
-
+print("last")
 
 
