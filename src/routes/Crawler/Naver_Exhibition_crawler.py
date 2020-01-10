@@ -40,8 +40,7 @@ for i in range(1, 164, 6):
             title.append(temp.text)
 
 title = set(title)
-print(len(title))
-print(title)
+
 
 
 # In[5]:
@@ -109,26 +108,12 @@ exhibition
 
 
 count = 0
-print(len(exhibition))
-for exhib in exhibition:
-    print("\ncount: ", count)
-    print("title: ", exhib['title'])
-    print("period: ", exhib['period'])
-    print("time: ", exhib['time'])
-    print("location: ", exhib['loc'])
-    print("host: ", exhib['host'])
-    print("price: ", exhib['price'])
-    print("poster_url: ", exhib['poster'])
-    print("\n")
-    count += 1
-
 
 # In[8]:
 
 
 location_set = set(location)
 location_set
-print(len(location_set))
 
 
 # In[9]:
@@ -148,8 +133,6 @@ for loc in location_set:
     json_string = requests.get(url, params).text
     data_list = json.loads(json_string)
     
-    print(loc)
-    
     try:
         temp_addr = data_list['result']['place']['list'][0]['roadAddress']
     
@@ -165,17 +148,6 @@ for loc in location_set:
 
 
 # In[10]:
-
-
-len(address)
-
-count = 0
-for addr in address:
-    print("\ncount: ", count)
-    print("location: ", addr['location'])
-    print("address: ", addr['address'])
-    print("\n")
-    count += 1
 
 
 # In[11]:
