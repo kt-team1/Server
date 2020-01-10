@@ -33,7 +33,7 @@ for i in range(1, 164, 6):
     data_list = data_list['listView']['htmls']
     
     for data in data_list:
-        soup = BeautifulSoup(data, 'lxml')
+        soup = BeautifulSoup(data, 'html.parser')
         temp = soup.select('dd a')[0]
 #         print(temp)
         for i in range(len(temp)):
@@ -62,7 +62,7 @@ for keyword in title:
     }
     
     resp = requests.get(url, params)
-    soup = BeautifulSoup(resp.content, 'lxml')
+    soup = BeautifulSoup(resp.content, 'html.parser')
     content = soup.find('div', class_ = 'contents03_sub')
     if (content != None and content.find('h4', class_ = "detail_title") != None):
         dt_list = content.select('dl.item_list dt')
