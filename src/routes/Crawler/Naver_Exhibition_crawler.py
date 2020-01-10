@@ -131,7 +131,7 @@ for loc in location_set:
 
     
     json_string = requests.get(url, params).text
-    data_list = json.loads(json_string)
+    data_list = json.loads(json_string, encoding='utf-8')
     
     try:
         temp_addr = data_list['result']['place']['list'][0]['roadAddress']
@@ -154,6 +154,7 @@ print("In[10]")
 
 
 jsonDict_1 = {'data': exhibition}
+
 with open('./routes/Crawler/exhibition.json', 'w', encoding='utf-8') as f:
     json.dump(jsonDict_1, f, ensure_ascii=False)
 
