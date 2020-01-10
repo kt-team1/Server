@@ -110,7 +110,7 @@ exhibition
 count = 0
 
 # In[8]:
-
+print("In[8]")
 
 location_set = set(location)
 location_set
