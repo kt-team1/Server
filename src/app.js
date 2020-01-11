@@ -10,19 +10,19 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 
-var options = {
-    mode: 'text',
-    encoding: 'utf8',
-    pythonOptions: ['-u'],
-    scriptPath: './routes/Crawler',
-    args: ['hello world'],
-    pythonPath: ''
-  };
+// var options = {
+//     mode: 'text',
+//     encoding: 'utf8',
+//     pythonOptions: ['-u'],
+//     scriptPath: './routes/Crawler',
+//     args: ['hello world'],
+//     pythonPath: ''
+//   };
   
-  var test = new PythonShell('Naver_Exhibition_crawler.py', options);
-  test.on('message',function(message){
-    console.log(message);
-  })
+//   var test = new PythonShell('Naver_Exhibition_crawler.py', options);
+//   test.on('message',function(message){
+//     console.log(message);
+//   })
 
 app.use(logger('dev'));
 app.use(express.json());
