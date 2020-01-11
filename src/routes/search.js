@@ -24,12 +24,12 @@ router.get('/searchapi', (req,res,next)=>{
 	
 	var result = "";
 
-	connection.query('SELECT title FROM exhibition', function(err, rows){
+	connection.query('SELECT * FROM exhibition', function(err, rows){
 		if(err){
 			result = err;
 			res.json({
 				result: result,
-				title: null
+				search: null
 			})
 		}
 		else{
@@ -37,7 +37,7 @@ router.get('/searchapi', (req,res,next)=>{
 
 			res.json({
 				result: result,
-				title: rows
+				search: rows
 			});
 
 		}
