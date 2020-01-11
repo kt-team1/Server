@@ -47,6 +47,7 @@ router.get('/searchapi', (req,res,next)=>{
 
 
 // /* GET : Load user's filterwords */
+
 // router.get('/searchapi', function(req, res) {
 //     res.header("Access-Control-Allow-Origin", "*");
 //     res.status(200).json(
@@ -67,5 +68,6 @@ router.get('/searchapi', (req,res,next)=>{
 //       }
 //     );
 //   });
+
 
 module.exports = router;
