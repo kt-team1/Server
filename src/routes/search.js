@@ -20,6 +20,15 @@ var dbError = function(res, err){
     })
 }
 
+// router.get('/searchapi', function(req, res) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.status(200).json(
+//       {
+//         "success" : true
+//       }
+//     );
+//   });
+
 /* GET : Load user's filterwords */
 router.get('/searchapi', function(req, res) {
     res.header("Access-Control-Allow-Origin", "*");
