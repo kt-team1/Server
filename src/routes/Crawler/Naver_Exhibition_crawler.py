@@ -100,8 +100,7 @@ for keyword in title:
 
         exhibition.append(temp)
         location.append(temp_location)
-        
-exhibition
+
 
 
 # In[7]:
@@ -113,7 +112,7 @@ count = 0
 print("In[8]")
 
 location_set = set(location)
-location_set
+print(location_set)
 
 
 # In[9]:
