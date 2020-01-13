@@ -8,12 +8,14 @@ import json
 
 exhibition = []
 dictLatlon = {}
+
 with open('exhibition_address.json', "r", encoding="utf-8") as json_file:
     print(type(json_file))
+    print(json_file)
     json_data = json.load(json_file)
 
     datas = json_data["data"]
-
+    # print(datas)
     for data in datas:
         if data["address"] != "":
             url = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query="+data["address"]
@@ -29,14 +31,15 @@ with open('exhibition_address.json', "r", encoding="utf-8") as json_file:
             # responseData = json.dumps(response.text)
             # responseJson = json.loads(responseData)
             responseJson = eval(response.text)
-            print(data["address"])
-            print(responseJson["addresses"][0]["x"])
+            # print(data["address"])
+            # print(responseJson["addresses"][0]["x"])
             dictLatlon.update({"address":data["address"], "x" : responseJson["addresses"][0]["x"], "y": responseJson["addresses"][0]["y"]})
-            print(dictLatlon)
-    
-with open("latlon.json", "w") as json_file:
-    latlon_data = json.dumps(dictLatlon)
-    json.dump(latlon_data, json_file)    
+            exhibition.append(dictLatlon)
+            
+# print(exhibition)    
+with open("latlon.json", "w", encoding = "utf-8") as json_file:
+    latlon_data = json.dumps(exhibition)
+    json.dump(latlon_data, json_file, ensure_ascii=False)    
 
 
     # # 문자열
