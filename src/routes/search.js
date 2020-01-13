@@ -37,7 +37,7 @@ router.get('/searchapi', (req,res,next)=>{
 
 			res.json({
 				result: result,
-				search: rows
+				search: rows[0]
 			});
 
 		}
