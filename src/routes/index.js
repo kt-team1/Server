@@ -20,38 +20,51 @@ var dbError = function(res, err){
 router.get('/', function(req, res, next) {
 	
 	var recommend_sql = 'select * from exhibition ORDER BY rand() limit 4;'
-	var isonline_sql = 'select exhibit_id, title, author, poster,date from online_art;'
+
 	
 	connection.query(recommend_sql, function(err, rows){
-		var recommend_result =""
-		var isonline_result =""
-		var recommend_data =null
-		var isonline_data =null
 		if(err){
-			recommend_result = err;
-			recommend_data =null
+			res.json({
+				result : err,
+				data :null
+			})
+			
 		}
 		else{
-			recommend_result = "success";
-			recommend_data =rows
-
-		}
-		connection.query(isonline_sql,function(err,result){
-			if(err){
-				isonline_result = err;
-				isonline_data= null;
-			}else{
-				isonline_result = "success";
-				isonline_data= result;
-			}
 			res.json({
-				recommend_result : recommend_result,
-				recommend: recommend_data,
-				isonline_result : isonline_result,
-				isonline : isonline_data
+				result : "success",
+				data :rows
 			})
-		})
 			
+
+		}					
+ 	 })
+	 
+
+});
+
+router.get('/home', function(req, res, next) {
+	
+	
+	var sql = 'select exhibit_id, title, author, poster,date from online_art;'
+	
+	connection.query(sql, function(err, rows){
+		
+		if(err){
+			res.json({
+				result : err,
+				data :null
+			})
+			
+		}
+		else{
+			res.json({
+				result : "success",
+				data :rows
+			})
+			
+
+		}			
  	 })
 	 
 
