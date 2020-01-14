@@ -45,7 +45,7 @@ for (var i = 0; i < infoLen; i++) {
         price = replaceAll(price,or,rep)
     }
     // id,title, place,address,date,time,price,poster
-    var q= "insert into exhibition values ({0},\"{1}\",\"{2}\",NULL,\"{3}\",\"{4}\",\"{5}\",\"{6}\");".format(i,title,place,date,time,price,poster)
+    var q= "insert into exhibition (exhibit_id,title, place,address,date,time,price,poster) values ({0},\"{1}\",\"{2}\",NULL,\"{3}\",\"{4}\",\"{5}\",\"{6}\");".format(i,title,place,date,time,price,poster)
     
     connection.query(q);
     

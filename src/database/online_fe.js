@@ -19,7 +19,7 @@ String.prototype.format = function() {
 fs.readFile('./result/online_artwork_FE.csv', 'utf8', function (err, data) {
     var dataArray = data.split(/\r?\n/);
     var len = dataArray.length
-    console.log(len)
+    
     
     var q = "delete from online_art;"
     connection.query(q)

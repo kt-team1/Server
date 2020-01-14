@@ -9,7 +9,7 @@ create table user(
 )DEFAULT CHARSET= utf8;
 
 create table exhibition(
-    exhibit_id int(10) NOT NULL AUTO_INCREMENT,
+    exhibit_id int(10) NOT NULL,
     title varchar(100) NOT NULL,
     place varchar(200) NOT NULL,
     address varchar(255),
@@ -17,8 +17,7 @@ create table exhibition(
     time varchar(100),
     price varchar(255),
     poster varchar(255),
-    info TEXT(255),
-    grade int(10) DEFAULT 0,
+    info TEXT(255) DEFAULT NULL,
     PRIMARY KEY(exhibit_id)
 )DEFAULT CHARSET= utf8;
 

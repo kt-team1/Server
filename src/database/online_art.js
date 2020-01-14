@@ -19,7 +19,7 @@ String.prototype.format = function() {
 fs.readFile('./result/online_exhibit.csv', 'utf8', function (err, data) {
     var dataArray = data.split(/\r?\n/);
     var len = dataArray.length;
-    console.log(len)
+    
     var q = "delete from online_art;"
     connection.query(q)
     
@@ -47,8 +47,6 @@ fs.readFile('./result/online_exhibit.csv', 'utf8', function (err, data) {
         connection.query(sql, function(err,rows){
             if(err){
                 console.log(err)
-            }else{
-                console.log(i+' success!')
             }
         })
     }
