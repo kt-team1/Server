@@ -18,7 +18,7 @@ create table exhibition(
     time varchar(100),
     price varchar(255),
     poster varchar(255),
-    info MEDIUMTEXT(500),
+    info TEXT(255),
     PRIMARY KEY(exhibit_id)
 )DEFAULT CHARSET= utf8;
 
@@ -27,6 +27,8 @@ create table online_art(
     title varchar(100) NOT NULL,
     author varchar(100),
     poster varchar(255),
+    date varchar(10),
+    info TEXT(255),
     index1 int(10),
     index2 int(10),
     index3 int(10),
@@ -57,8 +59,12 @@ create table search(
 create table picture(
     pic_id int(10) NOT NULL AUTO_INCREMENT,
     exhibit_id int(10) NOT NULL,
-    info varchar(255),
+    title varchar(100),
+    author varchar(30),
+    date varchar(30),
+    info TEXT(255),
     img varchar(255),
+    cluster_id int(10),
     PRIMARY KEY(pic_id),
     FOREIGN KEY(exhibit_id) REFERENCES online_art(exhibit_id)
 )DEFAULT CHARSET = utf8;

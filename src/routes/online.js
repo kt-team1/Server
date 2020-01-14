@@ -18,9 +18,24 @@ var dbError = function(res, err){
 }
 /* GET online list page. */
 router.get('/', function(req, res, next) {
-	
+    let sql = "select exhibit_id,title,author,poster,date,info from online_art;"
+    connection.query(sql, function(err,row){
+        if(err){
+            res.json({
+                result: err,
+                online_list : null
+            })
+        }else{
+            res.json({
+                result: "success",
+                online_list : row
+            })
+        }
+    })
 	
 });
-
+router.get('/details/main',function(req,res){
+    
+})
 
 module.exports = router;
