@@ -106,7 +106,7 @@ function dong(res,keyword,word){
 							res.json({
 								result :"success",
 								data: _data,
-								keyword : keyword
+								keyword : word
 							})
 					}
 						
@@ -117,66 +117,29 @@ function dong(res,keyword,word){
 			}
 		})
 }
-var num;
 
-router.post('/',(req,res)=>{
-	var data = req.body.keyword;
-	console.log(data)
-	var invoke =['기가지니', '지니야','친구야']
-	var word = '전시회'
-	var place = ['부근','근처','주변']
-	var listOfKey = data.split(' ')
-	var st = 0;
-	
-	if(invoke.includes(listOfKey[0])){
-		if(listOfKey[1] == word){
-			category = "title"
-			num = listOfKey[2]
-			res.redirect('/search/title')
-		}else if(place.includes(listOfKey[2])){
-			num = listOfKey[1]
-			res.redirect('/search/loc')
-		}else{
-			num = listOfKey[1]
-			res.redirect('/search/place')
+function title(res,word){
+	var keyword =word
+	var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
+	connection.query(sql,function(err,data){
+		if(err){
+			res.json({
+				result: err,
+				data : null,
+				keyword : keyword
+			})
 		}
-	}else{
-		if(listOfKey[0] == word){
-			category = "title"
-			num = listOfKey[1]
-			res.redirect('/search/title')
-		}else if(place.includes(listOfKey[1]) || listOfKey[1]==word){
-			num = listOfKey[0]
-			res.redirect('/search/loc')
-		}else if(listOfKey[1] =='전시'){
-			num = listOfKey[0]
-			res.redirect('/search/place')
-		}else{
-			num = listOfKey[0]
-			res.redirect('/search/loc')
+		else{
+			res.json({
+				result : "success",
+				data : data,
+				keyword : keyword
+			})
 		}
-	}
-
-	
-})
-
-router.get('/loc', (req,res,next)=>{
-	var keyword = num;
-	
-	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
-    	keyword = keyword.substr(0,keyword.length-1)
-		dong(res,keyword)
-	}
-	else{
-		if(keyword.slice(-1) =="역"){
-			keyword = keyword.substr(0,keyword.length-1)
-		}
-		subway(res,keyword)
-	}
-	
-})
-router.get('/place', (req,res,next)=>{
-	var keyword = num
+	})
+}
+function place(res,word){
+	var keyword = word
 	var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.place regexp \'{0}\';'.format(keyword) 
 	connection.query(sql,function(err,data){
 		if(err){
@@ -194,31 +157,81 @@ router.get('/place', (req,res,next)=>{
 			})
 		}
 	})
+}
+
+function loc(res,word){
+	var keyword = word;
+	
+	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
+    	keyword = keyword.substr(0,keyword.length-1)
+		dong(res,keyword,word)
+	}
+	else{
+		if(keyword.slice(-1) =="역"){
+			keyword = keyword.substr(0,keyword.length-1)
+		}
+		subway(res,keyword)
+	}
+}
+var num;
+var category
+
+router.post('/',(req,res)=>{
+	var data = req.body.keyword;
+	console.log(data)
+	var invoke =['기가지니', '지니야','친구야']
+	var word = '전시회'
+	var place = ['부근','근처','주변']
+	var listOfKey = data.split(' ')
+	var st = 0;
+	console.log(listOfKey)
+	if(invoke.includes(listOfKey[0])){
+		if(listOfKey[1] == word){
+			category = "title"
+			num = listOfKey[2]
+		}else if(place.includes(listOfKey[2])){
+			category="loc"
+			num = listOfKey[1]
+		}else{
+			category="place"
+			num = listOfKey[1]
+		}
+	}else{
+		if(listOfKey[0] == word){
+			category = "title"
+			num = listOfKey[1]
+		}else if(place.includes(listOfKey[1]) || listOfKey[1]==word){
+			category = "loc"
+			num = listOfKey[0]
+			
+		}else if(listOfKey[1] =='전시'){
+			category="place"
+			num = listOfKey[0]
+			
+		}else{
+			category ="loc"
+			num = listOfKey[0]
+		}
+	}
+	res.redirect('/search')
 	
 })
 
-router.get('/title',(req,res)=>{
-		var keyword =num
-		var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
-		connection.query(sql,function(err,data){
-			if(err){
-				res.json({
-					result: err,
-					data : null,
-					keyword : keyword
-				})
-			}
-			else{
-				res.json({
-					result : "success",
-					data : data,
-					keyword : keyword
-				})
-			}
-		})
-	})
+router.get('/',(req,res)=>{
+	console.log(num)
+	switch(category){
+		case "title":
+			title(res,num,num);
+			break;
+		case "loc":
+			loc(res,num);
+			break;
+		case "place":
+			place(res,num,num)
+			break;
+	}
+})
 
-	
 
 
 module.exports = router;
