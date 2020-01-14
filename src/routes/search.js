@@ -161,7 +161,7 @@ function place(res,word){
 
 function toLoc(res,word){
 	var keyword = word;
-	
+	console.log(word)
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
 		keyword = keyword.substr(0,keyword.length-1)
 		console.log(keyword)
@@ -184,7 +184,7 @@ router.post('/',(req,res)=>{
 	var place = ['부근','근처','주변']
 	var listOfKey = data.split(' ')
 	var st = 0;
-
+	console.log(data)
 	if(invoke.includes(listOfKey[0])){
 		if(listOfKey[1] == word){
 			category = "title"
