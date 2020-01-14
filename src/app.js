@@ -8,6 +8,7 @@ var {PythonShell} = require('python-shell');
 
 var indexRouter = require('./routes/index');
 var searchRouter = require('./routes/search');
+var textRouter = require('./routes/text');
 
 var app = express();
 
@@ -34,5 +35,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/', searchRouter);
+app.use('/', textRouter);
 
 module.exports = app;
