@@ -11,6 +11,16 @@ router.use(bodyParser.json());
 
 var message;
 
+String.prototype.format = function() {
+    var theString = this;
+    
+    for (var i = 0; i < arguments.length; i++) {
+        var regExp = new RegExp('\\{' + i + '\\}', 'gm');
+        theString = theString.replace(regExp, arguments[i]);       
+    }
+    return theString;
+}
+
 var dbError = function(res, err){
     message = err.code
     console.log('Error while performing query.', err);
