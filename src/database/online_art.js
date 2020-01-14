@@ -38,9 +38,6 @@ fs.readFile('./result/online_exhibit.csv', 'utf8', function (err, data) {
         let idx1 = listof[dict["idx1"]]
         let idx2 = listof[dict["idx2"]]
         let idx3 = listof[dict["idx3"]]
-        
-
-        
 
         //exhibit_id,title,author,poster,date,info, index1,index2,index3
         var sql = "insert into online_art values ({0},\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\',{6},{7},{8});".format(id,title,author,poster,date,info,idx1,idx2,idx3)

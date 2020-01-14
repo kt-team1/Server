@@ -19,8 +19,8 @@ var dbError = function(res, err){
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	
-	var recommend_sql = 'select * from exhibition where address regexp \'?\';'
-	var isonline_sql = 'select exhibit_id, title from online_art;'
+	var recommend_sql = 'select * from exhibition where address regexp \'강남\' limit 4;'
+	var isonline_sql = 'select exhibit_id, title, author, poster,date from online_art;'
 	
 	connection.query(recommend_sql, function(err, rows){
 		var recommend_result =""

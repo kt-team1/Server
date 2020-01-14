@@ -35,7 +35,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/', textRouter);
+//app.use('/', textRouter);
 app.use('/search', searchRouter);
 app.use('/exhibition', onlineRouter);
 
