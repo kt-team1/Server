@@ -178,13 +178,12 @@ var category
 
 router.post('/',(req,res)=>{
 	var data = req.body.keyword;
-	console.log(data)
 	var invoke =['기가지니', '지니야','친구야']
 	var word = '전시회'
 	var place = ['부근','근처','주변']
 	var listOfKey = data.split(' ')
 	var st = 0;
-	console.log(listOfKey)
+
 	if(invoke.includes(listOfKey[0])){
 		if(listOfKey[1] == word){
 			category = "title"
@@ -218,7 +217,7 @@ router.post('/',(req,res)=>{
 })
 
 router.get('/',(req,res)=>{
-	console.log(num)
+
 	switch(category){
 		case "title":
 			title(res,num,num);

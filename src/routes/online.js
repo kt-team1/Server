@@ -5,6 +5,7 @@ var dbconfig = require('../config/database.js');
 var connection = mysql.createConnection(dbconfig);
 var bodyParser = require('body-parser');
 
+
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
@@ -28,6 +29,7 @@ var dbError = function(res, err){
 /* GET online list page. */
 router.get('/', function(req, res, next) {
     let sql = "select exhibit_id,title,author,poster,date,info from online_art;"
+    
     connection.query(sql, function(err,row){
         if(err){
             res.json({
@@ -46,7 +48,9 @@ router.get('/', function(req, res, next) {
 
 router.get('/details/:id', function(req,res){
     var pic_id = req.params.id;
+    
     let sql = "select pic_id, title, author, date_, img, info from picture where pic_id = {0};".format(pic_id)
+    
     connection.query(sql,function(err,row){
         if(err){
             res.json({
@@ -58,9 +62,11 @@ router.get('/details/:id', function(req,res){
                 result:"success",
                 data : row
             })
+            
         }
     })
 })
+
 router.get('/details/recommend/:id',function(req,res){
     var pic_id = req.params.id;
     let sql = "select cluster_id from picture where pic_id ={0};".format(pic_id);
@@ -94,7 +100,6 @@ router.get('/details/recommend/:id',function(req,res){
                         result :"success",
                         data : row
                     })
-                    console.log(row)
                 }
             })
 
