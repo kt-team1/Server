@@ -18,7 +18,8 @@ String.prototype.format = function() {
 //load csv file
 fs.readFile('./result/online_artwork_FE.csv', 'utf8', function (err, data) {
     var dataArray = data.split(/\r?\n/);
-    var len = dataArray.length;
+    var len = dataArray.length
+    console.log(len)
     
     var q = "delete from online_art;"
     connection.query(q)
@@ -29,6 +30,7 @@ fs.readFile('./result/online_artwork_FE.csv', 'utf8', function (err, data) {
         //AUTHOR,EXHIBITID,TITLE,DATE,Img_URL,DESCRIPTION,cluster_id
         
         let dict = {"id":4,"poster":7,"info":8,"title":5,"author":3,"date":6,"cluster":9}
+    
         let id = listof[dict["id"]]
         let title = listof[dict["title"]]
         let author = listof[dict["author"]]
@@ -36,14 +38,18 @@ fs.readFile('./result/online_artwork_FE.csv', 'utf8', function (err, data) {
         let info = listof[dict["info"]]
         let date = listof[dict["date"]]
         let cluster =listof[dict["cluster"]]
-        
+    
         //pic_id, exhibit_id,title,author,date,info,img,cluster_id
 
-        var sql = "insert into picture (exhibit_id,title,author,date,info,img,cluster_id) values ({0},\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\',{6});".format(id,title,author,date,info,poster,cluster)
+        var sql = "insert into picture (exhibit_id,title,author,date_,info,img,cluster_id) values (?,?,?,?,?,?,?);"
+        var item = [id,title,author,date, info,poster,cluster]
+        sql = mysql.format(sql,item)
         connection.query(sql, function(err,rows){
             if(err){
                 console.log(err)
+                return;
             }
         })
     }
+    
   });

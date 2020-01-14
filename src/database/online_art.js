@@ -47,6 +47,8 @@ fs.readFile('./result/online_exhibit.csv', 'utf8', function (err, data) {
         connection.query(sql, function(err,rows){
             if(err){
                 console.log(err)
+            }else{
+                console.log(i+' success!')
             }
         })
     }

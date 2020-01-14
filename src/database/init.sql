@@ -1,7 +1,6 @@
 create database kt CHARACTER SET utf8 COLLATE utf8_general_ci;
 use kt;
 
--- mysql -uroot -p1234 < 寃쎈�?\init.sql
 
 create table user(
     user_id int(10) NOT NULL AUTO_INCREMENT,
@@ -19,6 +18,7 @@ create table exhibition(
     price varchar(255),
     poster varchar(255),
     info TEXT(255),
+    grade int(10) DEFAULT 0,
     PRIMARY KEY(exhibit_id)
 )DEFAULT CHARSET= utf8;
 
@@ -28,7 +28,7 @@ create table online_art(
     author varchar(100),
     poster varchar(255),
     date varchar(10),
-    info TEXT(255),
+    info TEXT(1000),
     index1 int(10),
     index2 int(10),
     index3 int(10),
@@ -61,12 +61,11 @@ create table picture(
     exhibit_id int(10) NOT NULL,
     title varchar(100),
     author varchar(30),
-    date varchar(30),
-    info TEXT(255),
+    date_ int(30),
+    info TEXT(1000),
     img varchar(255),
     cluster_id int(10),
-    PRIMARY KEY(pic_id),
-    FOREIGN KEY(exhibit_id) REFERENCES online_art(exhibit_id)
+    PRIMARY KEY(pic_id)
 )DEFAULT CHARSET = utf8;
 
 create table address_xy(
