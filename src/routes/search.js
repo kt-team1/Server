@@ -129,7 +129,6 @@ router.post('/',(req,res)=>{
 	var st = 0;
 	
 	if(invoke.includes(listOfKey[0])){
-		console.log('invoke')
 		if(listOfKey[1] == word){
 			category = "title"
 			num = listOfKey[2]
@@ -146,12 +145,15 @@ router.post('/',(req,res)=>{
 			category = "title"
 			num = listOfKey[1]
 			res.redirect('/search/title')
-		}else if(place.includes(listOfKey[1])){
+		}else if(place.includes(listOfKey[1]) || listOfKey[1]==word){
 			num = listOfKey[0]
 			res.redirect('/search/loc')
 		}else if(listOfKey[1] =='전시'){
 			num = listOfKey[0]
 			res.redirect('/search/place')
+		}else{
+			num = listOfKey[0]
+			res.redirect('/search/loc')
 		}
 	}
 
