@@ -112,7 +112,7 @@ function dong(res,keyword){
 
 
 router.get('/place', (req,res,next)=>{
-	var keyword = "신촌";
+	var keyword = "종로";
 	
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
     	keyword = keyword.substr(0,keyword.length-1)
