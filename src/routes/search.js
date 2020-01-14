@@ -5,8 +5,6 @@ var dbconfig = require('../config/database.js');
 var connection = mysql.createConnection(dbconfig);
 var bodyParser = require('body-parser');
 // var urlencode = require('urlencode');
-var keyword = require('../search/searchKeyword')
-
 
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
