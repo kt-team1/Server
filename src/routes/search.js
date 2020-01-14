@@ -57,7 +57,7 @@ function subway(res,keyword){
 }
 
 function dong(res,keyword,word){
-	var sql = "select distinct gu,ro from seouladdress where dong regexp \'{0}\';".format(keyword)
+	var sql = "select distinct gu,ro from seouladdress where dong regexp \'{0}\' or gu regexp \'{0}\';".format(keyword)
 		
 		connection.query(sql,function(err,row){
 			if(err){
@@ -163,7 +163,8 @@ function toLoc(res,word){
 	var keyword = word;
 	
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
-    	keyword = keyword.substr(0,keyword.length-1)
+		keyword = keyword.substr(0,keyword.length-1)
+		console.log(keyword)
 		dong(res,keyword,word)
 	}
 	else{
@@ -212,11 +213,11 @@ router.post('/',(req,res)=>{
 			num = listOfKey[0]
 		}
 	}
-	res.redirect('/search')
+	res.redirect('/search/place')
 	
 })
 
-router.get('/',(req,res)=>{
+router.get('/place',(req,res)=>{
 
 	switch(category){
 		case "title":
