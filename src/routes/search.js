@@ -85,7 +85,7 @@ function dong(res,keyword){
 				
 				loc = loc.substr(0,loc.length-1)
 			
-				var sq = "SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.address regexp \'{0}\'".format(loc)
+				var sq = "SELECT e.*,a.x as langitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.address regexp \'{0}\'".format(loc)
 				var sql = "select * from (select * from (SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place) as f where f.address not regexp \'{0}\') as e where address regexp \'{1}\';".format(loc,gu)
 
 				connection.query(sq+" union "+sql,function(err,_data){
@@ -109,14 +109,15 @@ function dong(res,keyword){
 			}
 		})
 }
-
+var num
 router.post('/',(req,res)=>{
 	var keyword = req.body.keyword;
-	console.log(keyword)
+	num  = keyword
+	res.redirect('/place')
+	
 })
 router.get('/place', (req,res,next)=>{
-	var keyword = "종로";
-	
+	var keyword = num;
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
     	keyword = keyword.substr(0,keyword.length-1)
 		dong(res,keyword)
@@ -127,11 +128,13 @@ router.get('/place', (req,res,next)=>{
 		}
 		subway(res,keyword)
 	}
+	console.log(keyword)
+	
 })
 
 router.get('/title',(req,res)=>{
 		var keyword ="광수";
-		var sql = 'SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
+		var sql = 'SELECT e.*,a.x as langitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
 		connection.query(sql,function(err,data){
 			if(err){
 				res.json({
@@ -150,7 +153,7 @@ router.get('/title',(req,res)=>{
 
 	router.get('/popular',(req,res)=>{
 		var keyword ="";
-		var sql = 'SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\' order by grade desc;'.format(keyword) 
+		var sql = 'SELECT e.*,a.x as langitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\' order by grade desc;'.format(keyword) 
 		connection.query(sql,function(err,data){
 			if(err){
 				res.json({
