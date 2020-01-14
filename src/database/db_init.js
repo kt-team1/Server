@@ -45,7 +45,7 @@ for (var i = 0; i < infoLen; i++) {
         price = replaceAll(price,or,rep)
     }
     // id,title, place,address,date,time,price,poster
-    var q= "insert into exhibition (exhibit_id,title,place,address,date,time,price,poster) values ({0},\"{1}\",\"{2}\",NULL,\"{3}\",\"{4}\",\"{5}\",\"{6}\");".format(i+1,title,place,date,time,price,poster)
+    var q= "insert into exhibition values ({0},\"{1}\",\"{2}\",NULL,\"{3}\",\"{4}\",\"{5}\",\"{6}\");".format(i,title,place,date,time,price,poster)
     
     connection.query(q);
     
@@ -57,14 +57,19 @@ for (var i = 0; i < locLen; i++) {
     let address= arr.address? arr.address: null;
     let x = arr.x
     let y= arr.y
-    var sql = "insert into address_xy values ({0},\"{1}\",\"{2}\",{3},{4});".format(i+1,place,address,x,y)
-    var q = "update exhibition set address =\"{0}\" where place = \"{1}\";".format(address,place);
-    connection.query(sql);
-    connection.query(q)
+    var sql = "insert into address_xy (place, address, x,y) values (\"{0}\",\"{1}\",{2},{3});".format(place,address,x,y)
+    var sql2 = "update exhibition set address =\"{0}\" where place = \"{1}\";".format(address,place);
+    connection.query(sql+sql2), function(err,result){
+        if(err){
+            connection.end();
+        }
+    };
 }
 
 var q = "update exhibition set address= place where address is null or address =\"null\"";
 
 connection.query(q);
-
+if(connection){
+    connection.end();
+}
 

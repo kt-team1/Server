@@ -10,7 +10,6 @@ String.prototype.format = function() {
         var regExp = new RegExp('\\{' + i + '\\}', 'gm');
         theString = theString.replace(regExp, arguments[i]);       
     }
-    
     return theString;
 }
 
@@ -21,9 +20,7 @@ fs.readFile('./result/address_result.csv', 'utf8', function (err, data) {
     var dataArray = data.split(/\r?\n/);
     var len = dataArray.length;
     
-    //connection.connect();
-
-    var q = "delete from seoulAddress;"
+    var q = "delete from seouladdress;"
     connection.query(q)
     
     //get gu,dong, ro data by looping data process
@@ -33,9 +30,14 @@ fs.readFile('./result/address_result.csv', 'utf8', function (err, data) {
         dong = listof[1]
         ro = listof[2]
 
-        var sql = "insert into seoulAddress values ({0},\"{1}\",\"{2}\",\"{3}\");".format(i+1,gu,dong,ro)
-        connection.query(sql)
+        var sql = "insert into seouladdress values ({0},\"{1}\",\"{2}\",\"{3}\");".format(i,gu,dong,ro)
+        connection.query(sql, function(err,rows){
+            if(err){
+                console.log(err)
+                connection.end();
+            }
+        })
     }
-    
+    connection.end();
   });
 //connection.end();

@@ -17,9 +17,9 @@ var dbError = function(res, err){
     })
 }
 /* GET home page. */
-router.get('/main', function(req, res, next) {
+router.get('/', function(req, res, next) {
 	
-	var recommend_sql = 'select exhibit_id, title, poster, date,place from exhibition;'
+	var recommend_sql = 'select exhibit_id, title, poster, date,place from exhibition where address regexp \'?\';'
 	var isonline_sql = 'select exhibit_id, title from exhibition;'
 	
 	connection.query(recommend_sql, function(err, rows){
