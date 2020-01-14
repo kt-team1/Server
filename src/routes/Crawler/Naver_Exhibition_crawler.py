@@ -112,7 +112,6 @@ count = 0
 print("In[8]")
 
 location_set = set(location)
-print(location_set)
 
 
 # In[9]:
