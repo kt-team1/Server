@@ -34,8 +34,8 @@ router.get('/', function(req, res, next) {
     })
 	
 });
-router.get('/details/main',function(req,res){
-    let sql = "select exhibit_id,title,author,poster,date,info from online_art;"
+router.get('/details/recommend',function(req,res){
+    let sql = "select cluster_id from picture where pic_id =;"
     connection.query(sql, function(err,row){
         if(err){
             res.json({

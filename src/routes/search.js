@@ -159,7 +159,7 @@ function place(res,word){
 	})
 }
 
-function loc(res,word){
+function toLoc(res,word){
 	var keyword = word;
 	
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
@@ -224,7 +224,7 @@ router.get('/',(req,res)=>{
 			title(res,num,num);
 			break;
 		case "loc":
-			loc(res,num);
+			toLoc(res,num);
 			break;
 		case "place":
 			place(res,num,num)
