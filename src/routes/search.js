@@ -85,8 +85,8 @@ function dong(res,keyword){
 				
 				loc = loc.substr(0,loc.length-1)
 			
-				var sq = "SELECT e.*,a.latitude,a.longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.address regexp \'{0}\'".format(loc)
-				var sql = "select * from (select * from (SELECT e.*,a.latitude,a.longitude FROM exhibition as e left join address_xy as a on a.place = e.place) as f where f.address not regexp \'{0}\') as e where address regexp \'{1}\';".format(loc,gu)
+				var sq = "SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.address regexp \'{0}\'".format(loc)
+				var sql = "select * from (select * from (SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place) as f where f.address not regexp \'{0}\') as e where address regexp \'{1}\';".format(loc,gu)
 
 				connection.query(sq+" union "+sql,function(err,_data){
 					if(err){
@@ -111,7 +111,7 @@ function dong(res,keyword){
 }
 
 
-router.get('/place', (req,res,next)=>{
+router.get('/place/:place', (req,res,next)=>{
 	var keyword = "종로";
 	
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
@@ -147,7 +147,7 @@ router.get('/title',(req,res)=>{
 
 	router.get('/popular',(req,res)=>{
 		var keyword ="";
-		var sql = 'SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
+		var sql = 'SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\' order by grade desc;'.format(keyword) 
 		connection.query(sql,function(err,data){
 			if(err){
 				res.json({

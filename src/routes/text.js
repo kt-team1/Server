@@ -11,11 +11,7 @@ router.use(bodyParser.json());
 router.post('/text', function (req, res) {
     var text = req.body.text;
     console.log(text);
-    message = "No account matches that id."
-            res.json({
-                result : message,
-                filter : null
-            })
+    res.redirect('/search/place/'+encodeURI(text))
 });
 
 
