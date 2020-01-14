@@ -36,44 +36,50 @@ function subway(res,keyword){
 		if(result.length==0){
 			res.json({
 				result: "zero",
-				data: null
+				data: null,
+				keyword : keyword
 			})
 			return
 		}
-		loc ="";
+		loc ="^";
 
 		for(var i=0;i<result.length;i++){
 			loc += result[i].dong
-			if(i==result.length-1){
+			if(i == result.length-1){
 				break
 			}
-			loc += "|"
+			loc +="|^"
 		}
-		dong(res,loc)
+		
+		
+		dong(res,loc,keyword)
 	})
 }
 
-function dong(res,keyword){
+function dong(res,keyword,word){
 	var sql = "select distinct gu,ro from seouladdress where dong regexp \'{0}\';".format(keyword)
-
+		
 		connection.query(sql,function(err,row){
 			if(err){
 				res.json({
 					result:err,
-					data: null
+					data: null,
+					keyword : word
 				})
 			}else{
 				
 				if(row.length==0){
 					res.json({
 						result: "zero",
-						data: null
+						data: null,
+						keyword : word
 					})
 					return;
 				}
 				
 				let loc ="";
 				let gu = row[0].gu;
+				
 	
 				for(var i=0;i<row.length;i++){
 					loc += row[i].ro
@@ -92,13 +98,15 @@ function dong(res,keyword){
 					if(err){
 						res.json({
 							result:err,
-							data: null
+							data: null,
+							keyword : word
 						})
 					}else{
 					
 							res.json({
 								result :"success",
-								data: _data
+								data: _data,
+								keyword : keyword
 							})
 					}
 						
@@ -112,14 +120,47 @@ function dong(res,keyword){
 var num;
 
 router.post('/',(req,res)=>{
-	var keyword = req.body.keyword;
-	num  = keyword
-	console.log(keyword)
-	res.redirect('/search')
+	var data = req.body.keyword;
+	console.log(data)
+	var invoke =['기가지니', '지니야','친구야']
+	var word = '전시회'
+	var place = ['부근','근처','주변']
+	var listOfKey = data.split(' ')
+	var st = 0;
+	
+	if(invoke.includes(listOfKey[0])){
+		console.log('invoke')
+		if(listOfKey[1] == word){
+			category = "title"
+			num = listOfKey[2]
+			res.redirect('/search/title')
+		}else if(place.includes(listOfKey[2])){
+			num = listOfKey[1]
+			res.redirect('/search/loc')
+		}else{
+			num = listOfKey[1]
+			res.redirect('/search/place')
+		}
+	}else{
+		if(listOfKey[0] == word){
+			category = "title"
+			num = listOfKey[1]
+			res.redirect('/search/title')
+		}else if(place.includes(listOfKey[1])){
+			num = listOfKey[0]
+			res.redirect('/search/loc')
+		}else if(listOfKey[1] =='전시'){
+			num = listOfKey[0]
+			res.redirect('/search/place')
+		}
+	}
+
+	
 })
 
-router.get('/', (req,res,next)=>{
+router.get('/loc', (req,res,next)=>{
 	var keyword = num;
+	
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
     	keyword = keyword.substr(0,keyword.length-1)
 		dong(res,keyword)
@@ -130,62 +171,52 @@ router.get('/', (req,res,next)=>{
 		}
 		subway(res,keyword)
 	}
-	console.log(keyword)
 	
 })
 router.get('/place', (req,res,next)=>{
-	var keyword = "종로";
-	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
-    	keyword = keyword.substr(0,keyword.length-1)
-		dong(res,keyword)
-	}
-	else{
-		if(keyword.slice(-1) =="역"){
-			keyword = keyword.substr(0,keyword.length-1)
+	var keyword = num
+	var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.place regexp \'{0}\';'.format(keyword) 
+	connection.query(sql,function(err,data){
+		if(err){
+			res.json({
+				result: err,
+				data : null,
+				keyword : keyword
+			})
 		}
-		subway(res,keyword)
-	}
-	console.log(keyword)
+		else{
+			res.json({
+				result : "success",
+				data : data,
+				keyword : keyword
+			})
+		}
+	})
 	
 })
 
 router.get('/title',(req,res)=>{
-		var keyword ="광수";
+		var keyword =num
 		var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
 		connection.query(sql,function(err,data){
 			if(err){
 				res.json({
 					result: err,
-					data : null
+					data : null,
+					keyword : keyword
 				})
 			}
 			else{
 				res.json({
 					result : "success",
-					data : data
+					data : data,
+					keyword : keyword
 				})
 			}
 		})
 	})
 
-	router.get('/popular',(req,res)=>{
-		var keyword ="";
-		var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\' order by grade desc;'.format(keyword) 
-		connection.query(sql,function(err,data){
-			if(err){
-				res.json({
-					result: err,
-					data : null
-				})
-			}
-			else{
-				res.json({
-					result : "success",
-					data : data
-				})
-			}
-		})
-	})
+	
 
 
 module.exports = router;
