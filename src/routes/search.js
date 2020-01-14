@@ -117,7 +117,7 @@ router.post('/',(req,res)=>{
 	
 })
 router.get('/place', (req,res,next)=>{
-	var keyword = num;
+	var keyword = "종로";
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
     	keyword = keyword.substr(0,keyword.length-1)
 		dong(res,keyword)
