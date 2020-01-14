@@ -114,7 +114,7 @@ router.post('/',(req,res)=>{
 	var keyword = req.body.keyword;
 	console.log(keyword)
 })
-router.get('/place/:place', (req,res,next)=>{
+router.get('/place', (req,res,next)=>{
 	var keyword = "종로";
 	
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
