@@ -109,11 +109,28 @@ function dong(res,keyword){
 			}
 		})
 }
-var num
+var num;
+
 router.post('/',(req,res)=>{
 	var keyword = req.body.keyword;
 	num  = keyword
-	res.redirect('/place')
+	console.log(keyword)
+	res.redirect('/search')
+})
+
+router.get('/', (req,res,next)=>{
+	var keyword = num;
+	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
+    	keyword = keyword.substr(0,keyword.length-1)
+		dong(res,keyword)
+	}
+	else{
+		if(keyword.slice(-1) =="역"){
+			keyword = keyword.substr(0,keyword.length-1)
+		}
+		subway(res,keyword)
+	}
+	console.log(keyword)
 	
 })
 router.get('/place', (req,res,next)=>{
