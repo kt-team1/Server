@@ -44,10 +44,14 @@ function subway(res,keyword){
 		loc ="^";
 
 		for(var i=0;i<result.length;i++){
+			if(result[i].dong =''){
+				continue
+			}
 			loc += result[i].dong
 			if(i == result.length-1){
 				break
 			}
+			
 			loc +="|^"
 		}
 		
@@ -161,10 +165,10 @@ function place(res,word){
 
 function toLoc(res,word){
 	var keyword = word;
-	console.log(word)
+	
 	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
 		keyword = keyword.substr(0,keyword.length-1)
-		console.log(keyword)
+		
 		dong(res,keyword,word)
 	}
 	else{
@@ -184,7 +188,7 @@ router.post('/',(req,res)=>{
 	var place = ['부근','근처','주변']
 	var listOfKey = data.split(' ')
 	var st = 0;
-	console.log(data)
+	
 	if(invoke.includes(listOfKey[0])){
 		if(listOfKey[1] == word){
 			category = "title"
