@@ -54,7 +54,7 @@ function subway(res,keyword){
 }
 
 function dong(res,keyword){
-	var sql = "select distinct gu,ro from seoulAddress where dong regexp \'{0}\';".format(keyword)
+	var sql = "select distinct gu,ro from seouladdress where dong regexp \'{0}\';".format(keyword)
 
 		connection.query(sql,function(err,row){
 			if(err){
