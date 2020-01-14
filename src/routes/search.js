@@ -110,7 +110,10 @@ function dong(res,keyword){
 		})
 }
 
-
+router.post('/',(req,res)=>{
+	var keyword = req.body.keyword;
+	console.log(keyword)
+})
 router.get('/place/:place', (req,res,next)=>{
 	var keyword = "종로";
 	
