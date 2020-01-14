@@ -8,6 +8,7 @@ var {PythonShell} = require('python-shell');
 
 var indexRouter = require('./routes/index');
 var searchRouter = require('./routes/search');
+var onlineRouter = require('./routes/online');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/', searchRouter);
+app.use('/search', searchRouter);
+app.use('/exhibition', onlineRouter);
 
 module.exports = app;

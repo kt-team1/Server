@@ -5,6 +5,8 @@ var dbconfig = require('../config/database.js');
 var connection = mysql.createConnection(dbconfig);
 var bodyParser = require('body-parser');
 // var urlencode = require('urlencode');
+var keyword = require('../search/searchKeyword')
+
 
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
@@ -20,54 +22,139 @@ var dbError = function(res, err){
     })
 }
 
-router.get('/searchapi', (req,res,next)=>{
-	
-	var result = "";
-
-	connection.query('SELECT * FROM exhibition', function(err, rows){
-		if(err){
-			result = err;
+function subway(res,keyword){
+	var sql = 'select distinct dong from subway where station LIKE \'%{0}%\';'.format(keyword)
+	connection.query(sql,function(err,result){
+		if(result.length==0){
 			res.json({
-				result: result,
-				search: null
+				result: "zero",
+				data: null
 			})
+			return
 		}
-		else{
-			result = "success";
+		loc ="";
 
-			res.json({
-				result: result,
-				search: rows
-			});
-
+		for(var i=0;i<result.length;i++){
+			loc += result[i].dong
+			if(i==result.length-1){
+				break
+			}
+			loc += "|"
 		}
+		dong(res,loc)
 	})
-});
+}
+
+function dong(res,keyword){
+	var sql = "select distinct gu,ro from seoulAddress where dong regexp \'{0}\';".format(keyword)
+
+		connection.query(sql,function(err,row){
+			if(err){
+				res.json({
+					result:err,
+					data: null
+				})
+			}else{
+				
+				if(row.length==0){
+					res.json({
+						result: "zero",
+						data: null
+					})
+					return;
+				}
+				
+				let loc ="";
+				let gu = row[0].gu;
+	
+				for(var i=0;i<row.length;i++){
+					loc += row[i].ro
+					if(row[i].ro =""){
+						continue
+					}
+					loc += "|"
+				}
+				
+				loc = loc.substr(0,loc.length-1)
+			
+				var sq = "SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.address regexp \'{0}\'".format(loc)
+				var sql = "select * from (select * from (SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place) as f where f.address not regexp \'{0}\') as e where address regexp \'{1}\';".format(loc,gu)
+
+				connection.query(sq+" union "+sql,function(err,_data){
+					if(err){
+						res.json({
+							result:err,
+							data: null
+						})
+					}else{
+					
+							res.json({
+								result :"success",
+								data: _data
+							})
+					}
+						
+					
+				})
+				
+	
+			}
+		})
+}
 
 
+router.get('/place', (req,res,next)=>{
+	var keyword = "신촌";
+	
+	if(keyword.slice(-1) =="동" ||keyword.slice(-1)=="구"){
+    	keyword = keyword.substr(0,keyword.length-1)
+		dong(res,keyword)
+	}
+	else{
+		if(keyword.slice(-1) =="역"){
+			keyword = keyword.substr(0,keyword.length-1)
+		}
+		subway(res,keyword)
+	}
+})
 
-// /* GET : Load user's filterwords */
+router.get('/title',(req,res)=>{
+		var keyword ="광수";
+		var sql = 'SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
+		connection.query(sql,function(err,data){
+			if(err){
+				res.json({
+					result: err,
+					data : null
+				})
+			}
+			else{
+				res.json({
+					result : "success",
+					data : data
+				})
+			}
+		})
+	})
 
-// router.get('/searchapi', function(req, res) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.status(200).json(
-//       {
-//           "result" : "success",
-//         "search": [
-//             {
-//               "exhibitionId" : "0",
-//               "exhibitionTitle" : "제니 리 로빈슨",
-//               "exhibitPoster" : "https://search.pstatic.net/common?type=ofullfill&size=256x368&quality=95&direct=true&src=https%3A%2F%2Fdbscthumb-phinf.pstatic.net%2F3029_000_7%2F20191212140722402_OCVN24YDQ.jpg%2F%25EC%25A0%259C%25EB%258B%2588.jpg%3Ftype%3Dm1501",
-//               "exhibitionDate" : "2020.01.14. (화) ~ 2020.01.22. (수)",
-//               "exhibitionTime" : "null",
-//               "exhibitionPlace" : "비움갤러리",
-//               "exhibitionAddress" : "서울특별시 중구 퇴계로36길 35 B1",
-//               "exhibitionPrice" : "null",
-//             },
-//           ]
-//       }
-//     );
-//   });
+	router.get('/popular',(req,res)=>{
+		var keyword ="";
+		var sql = 'SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
+		connection.query(sql,function(err,data){
+			if(err){
+				res.json({
+					result: err,
+					data : null
+				})
+			}
+			else{
+				res.json({
+					result : "success",
+					data : data
+				})
+			}
+		})
+	})
 
 
 module.exports = router;
