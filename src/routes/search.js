@@ -44,9 +44,7 @@ function subway(res,keyword){
 		loc ="^";
 
 		for(var i=0;i<result.length;i++){
-			if(result[i].dong ==''){
-				console.log(result[i].dong)
-			}
+			
 			loc += result[i].dong
 			if(i == result.length-1){
 				break
@@ -87,7 +85,8 @@ function dong(res,keyword,word){
 	
 				for(var i=0;i<row.length;i++){
 					loc += row[i].ro
-					if(row[i].ro =""){
+					
+					if(row[i].ro ==""){
 						continue
 					}
 					loc += "|"
