@@ -44,7 +44,9 @@ function subway(res,keyword){
 		loc ="^";
 
 		for(var i=0;i<result.length;i++){
-			console.log(result[i].dong)
+			if(result[i].dong ==''){
+				console.log(result[i].dong)
+			}
 			loc += result[i].dong
 			if(i == result.length-1){
 				break
