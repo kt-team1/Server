@@ -39,9 +39,5 @@ app.use('/', indexRouter);
 app.use('/search', searchRouter);
 app.use('/exhibition', onlineRouter);
 
-app.all('/*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
-  });
+
 module.exports = app;
