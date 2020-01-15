@@ -182,6 +182,7 @@ var category
 
 router.post('/',(req,res)=>{
 	var data = req.body.keyword;
+	console.log(data)
 	var invoke =['기가지니', '지니야','친구야']
 	var word = '전시회'
 	var place = ['부근','근처','주변']
