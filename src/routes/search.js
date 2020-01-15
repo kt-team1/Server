@@ -217,11 +217,11 @@ router.post('/',(req,res)=>{
 			num = listOfKey[0]
 		}
 	}
-	res.redirect('/search/place')
+	res.redirect('/search')
 	
 })
 
-router.get('/place',(req,res)=>{
+router.get('/',(req,res)=>{
 
 	switch(category){
 		case "title":
