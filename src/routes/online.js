@@ -26,6 +26,7 @@ var dbError = function(res, err){
         filterwords: null
     })
 }
+
 /* GET online list page. */
 router.get('/', function(req, res, next) {
     let sql = "select exhibit_id,title,author,poster,date,info from online_art;"

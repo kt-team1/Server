@@ -30,10 +30,11 @@ var dbError = function(res, err){
     })
 }
 
+// keyword : subway station or that doesn't include word like "dong" or "gu"
 function subway(res,keyword){
 	var sql = 'select distinct dong from subway where station LIKE \'%{0}%\';'.format(keyword)
 	connection.query(sql,function(err,result){
-		if(result.length==0){
+		if(result.length==0){  // if data doesn't exist
 			res.json({
 				result: "zero",
 				data: null,
@@ -41,8 +42,10 @@ function subway(res,keyword){
 			})
 			return
 		}
-		loc ="^";
 
+		loc ="^";
+		
+		// data processing for using 'regexp' 
 		for(var i=0;i<result.length;i++){
 			
 			loc += result[i].dong
@@ -50,7 +53,7 @@ function subway(res,keyword){
 				break
 			}
 			
-			loc +="|^"
+			loc +="|^" // using ^ for extracting accurate address
 		}
 		
 		
@@ -58,6 +61,7 @@ function subway(res,keyword){
 	})
 }
 
+// keyword : include word like "dong" or "gu"
 function dong(res,keyword,word){
 	var sql = "select distinct gu,ro from seouladdress where dong regexp \'{0}\' or gu regexp \'{0}\';".format(keyword)
 		
@@ -82,7 +86,7 @@ function dong(res,keyword,word){
 				let loc ="";
 				let gu = row[0].gu;
 				
-	
+				
 				for(var i=0;i<row.length;i++){
 					loc += row[i].ro
 					
@@ -93,7 +97,8 @@ function dong(res,keyword,word){
 				}
 				
 				loc = loc.substr(0,loc.length-1)
-			
+				
+				// 
 				var sq = "SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.address regexp \'{0}\'".format(loc)
 				var sql = "select * from (select * from (SELECT e.*,a.x,a.y FROM exhibition as e left join address_xy as a on a.place = e.place) as f where f.address not regexp \'{0}\') as e where address regexp \'{1}\';".format(loc,gu)
 
@@ -121,6 +126,7 @@ function dong(res,keyword,word){
 		})
 }
 
+// when keyword is title.
 function title(res,word){
 	var keyword =word
 	var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.title regexp \'{0}\';'.format(keyword) 
@@ -141,6 +147,8 @@ function title(res,word){
 		}
 	})
 }
+
+// when keyword is place.
 function place(res,word){
 	var keyword = word
 	var sql = 'SELECT e.*,a.x as latitude,a.y as longitude FROM exhibition as e left join address_xy as a on a.place = e.place where e.place regexp \'{0}\';'.format(keyword) 
@@ -162,6 +170,8 @@ function place(res,word){
 	})
 }
 
+
+//when keyword is location or address
 function toLoc(res,word){
 	var keyword = word;
 	

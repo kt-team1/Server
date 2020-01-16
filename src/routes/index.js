@@ -43,6 +43,7 @@ router.get('/', function(req, res, next) {
 
 });
 
+// send online exhibition data
 router.get('/home', function(req, res, next) {
 	
 	

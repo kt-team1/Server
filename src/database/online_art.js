@@ -23,7 +23,7 @@ fs.readFile('./result/online_exhibit.csv', 'utf8', function (err, data) {
     var q = "delete from online_art;"
     connection.query(q)
     
-    //get gu,dong, ro data by looping data process
+    //get exhibition data
     for(var i=1;i<len;i++){
         var listof = dataArray[i].split(';')
         //EXHIBITID;EXHIBITTITLE;AUTHOR;IMGURL;INDEX_1;INDEX_2;INDEX_3
